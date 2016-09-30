@@ -9,6 +9,10 @@ Created a git repo
       - git init
       - git add .
       - git status
+      - git commit -m "comment"
+      - git config --global user.name "gjgjwmertens"
+      - git config --global user.email "G.J.G.J.W.Mertens@uva.nl"
+      - git log
 
 - npm init (see package.json)
 - npm install johnny-five --save
