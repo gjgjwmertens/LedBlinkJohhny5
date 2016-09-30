@@ -4,6 +4,7 @@ Created a git repo
 	- https://github.com/gjgjwmertens/LedBlinkJohhny5
 	- TODO: still need to connect the project to the repo
       - Also see D:\Graphical Design\Lynda\WebDesign\WebProjectWorkflows\notes.txt
+		- Y:\Projects\Electronica\RaspBerryPi\Projects\BlinkLedJohnny5\github-git-cheat-sheet.pdf
       - make sure you are in the root folder of the project
       - create a .gitignore file with the files and folders you do not want into git
       - git init
@@ -18,7 +19,8 @@ Created a git repo
       - git push -u origin master
       - since there is already something in the repo you have to do a pull first
          - git pull origin master (merge)
-      - git pull origin master (get latest version)
+      - git pull origin master (get latest version, not the correct way)
+	  - get fetch origin master (get the latest changes)
 
 - npm init (see package.json)
 - npm install johnny-five --save
