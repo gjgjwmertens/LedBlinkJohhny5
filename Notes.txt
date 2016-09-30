@@ -3,6 +3,12 @@ Dir: pi@raspberrypi:~/Documents/NodeJS_Projects/LedBlinkJohnny5
 Created a git repo
 	- https://github.com/gjgjwmertens/LedBlinkJohhny5
 	- TODO: still need to connect the project to the repo
+      - Also see D:\Graphical Design\Lynda\WebDesign\WebProjectWorkflows\notes.txt
+      - make sure you are in the root folder of the project
+      - create a .gitignore file with the files and folders you do not want into git
+      - git init
+      - git add .
+      - git status
 
 - npm init (see package.json)
 - npm install johnny-five --save
