@@ -1,0 +1,15 @@
+Created project 30-09-2016
+Dir: pi@raspberrypi:~/Documents/NodeJS_Projects/LedBlinkJohnny5
+Created a git repo
+	- https://github.com/gjgjwmertens/LedBlinkJohhny5
+	- TODO: still need to connect the project to the repo
+
+- npm init (see package.json)
+- npm install johnny-five --save
+
+In order for Johnny5 to connect to the Arduino board you need to upload the StandardFirmata firmware.
+You use the Arduino IDE to do this. You can either hook the uno up to the laptop or install arduino IDE on the raspberry.
+I chose the later
+	- In the Arduino IDE File > Examples > Firmata > StandardFirmata
+		- The so called firmware is just an other sketch uploaded into the ardruino
+	- Upload
