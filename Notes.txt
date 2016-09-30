@@ -13,6 +13,11 @@ Created a git repo
       - git config --global user.name "gjgjwmertens"
       - git config --global user.email "G.J.G.J.W.Mertens@uva.nl"
       - git log
+      - git branch
+      - git remote add origin https://github.com/gjgjwmertens/LedBlinkJohhny5
+      - git push -u origin master
+      - since there is already something in the repo you have to do a pull first
+         - git pull origin master (merge)
 
 - npm init (see package.json)
 - npm install johnny-five --save
