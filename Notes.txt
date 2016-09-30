@@ -18,6 +18,7 @@ Created a git repo
       - git push -u origin master
       - since there is already something in the repo you have to do a pull first
          - git pull origin master (merge)
+      - git pull origin master (get latest version)
 
 - npm init (see package.json)
 - npm install johnny-five --save
