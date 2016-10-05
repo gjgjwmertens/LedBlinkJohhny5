@@ -2,7 +2,6 @@ Created project 30-09-2016
 Dir: pi@raspberrypi:~/Documents/NodeJS_Projects/LedBlinkJohnny5
 Created a git repo
 	- https://github.com/gjgjwmertens/LedBlinkJohhny5
-	- TODO: still need to connect the project to the repo
       - Also see D:\Graphical Design\Lynda\WebDesign\WebProjectWorkflows\notes.txt
 		- Y:\Projects\Electronica\RaspBerryPi\Projects\BlinkLedJohnny5\github-git-cheat-sheet.pdf
       - make sure you are in the root folder of the project
@@ -31,3 +30,13 @@ I chose the later
 	- In the Arduino IDE File > Examples > Firmata > StandardFirmata
 		- The so called firmware is just an other sketch uploaded into the ardruino
 	- Upload
+
+Making the editing process easier I use PhPStorm as an IDE.
+Created a new project from existing code and configure the rpi (20.0.0.112) as host.
+You can also start a SSH session from the tools menu.
+
+To make web server development easier I started using Express
+   - npm install express --save
+   - created exp_app.js as a starting point
+      - node exp_app.js
+      - http://20.0.0.112:3000
