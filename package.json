@@ -4,7 +4,8 @@
   "description": "blinking led using Johhny 5 lib",
   "main": "app.js",
   "scripts": {
-    "test": "node app"
+    "test": "node app",
+    "start": "nodemon exp_app"
   },
   "repository": {
     "type": "git",
@@ -13,7 +14,11 @@
   "author": "G.J. Mertens",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.5.2",
     "express": "^4.14.0",
-    "johnny-five": "^0.10.1"
+    "johnny-five": "^0.10.1",
+    "jquery": "^3.1.1",
+    "nodemon": "^1.11.0",
+    "reload": "^1.0.1"
   }
 }

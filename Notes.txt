@@ -39,3 +39,5 @@ To make web server development easier I started using Express
    - created exp_app.js as a starting point
       - node exp_app.js
       - http://20.0.0.112:3000
+
+nodemon not detecting all changes!!
