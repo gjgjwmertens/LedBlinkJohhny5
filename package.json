@@ -20,6 +20,7 @@
     "johnny-five": "^0.10.1",
     "jquery": "^3.1.1",
     "nodemon": "^1.11.0",
-    "reload": "^1.0.1"
+    "reload": "^1.0.1",
+    "socket.io": "^1.5.0"
   }
 }

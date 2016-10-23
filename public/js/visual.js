@@ -3,6 +3,6 @@
  */
 
 $(function(){
-   console.log('D3 loaded');
+   console.log('Visual loaded');
    console.log($().jquery);
 });

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function (req, res) {
+router.get('/visual', function (req, res) {
    console.log(req.params);
    res.render('visual', {         // pass vars to the render template
       pageTitle: 'PID Visualisation',

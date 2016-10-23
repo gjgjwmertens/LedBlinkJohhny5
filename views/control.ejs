@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <% include templates/head.ejs %>
+      <link rel="stylesheet" type="text/css" href="css/control.css">
+   </head>
+
+   <body id="<%= pageID %>">
+      <p><a href="/">Home</a></p>
+      <h1>PID chopper control</h1>
+
+      <div id="current_status_conatianer_id">
+         <dl>
+            <dt>Type</dt><dd id="type_status_field_id">Unknown</dd>
+            <dt>Data</dt><dd id="data_status_field_id">Unknown</dd>
+            <dt>Last updated</dt><dd id="updated_status_field_id">Unknown</dd>
+         </dl>
+         <button id="update_status_btn_id">Update</button>
+      </div>
+
+      <div id="item_5_status_container_id">
+         <dl>
+            <dt>Current value</dt><dd id="item_5_current_value_field_id">Unknown</dd>
+            <dt>Last updated</dt><dd id="item_5_updated_field_id">Unknown</dd>
+         </dl>
+         <div id="item_5_new_value_container_id">
+            <label for="item_input_field_id">New value</label>
+            <input type="text" name="item_input_field" id="item_input_field_id" />
+            <button id="update_item_5_value_btn_id">Set</button>
+         </div>
+      </div>
+   </body>
+   <!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
+   <% include templates/script.ejs %>
+   <script src="js/control.js"></script>
+
+</html>

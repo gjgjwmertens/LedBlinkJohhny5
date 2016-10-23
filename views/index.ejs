@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <meta charset="UTF-8">
-      <link rel="stylesheet" type="text/css" href="css/main.css">
-
-      <title><%= siteTitle %>: <%= pageTitle %></title>
+      <% include templates/head.ejs %>
    </head>
 
    <body id="<%= pageID %>">
       <h1>Hello World!</h1>
       <ul>
          <li><a href="visual">Visualisation</a></li>
+         <li><a href="d3">D3 course</a></li>
+         <li><a href="control">PID control</a></li>
       </ul>
    </body>
 
-   <script src="jquery/jquery.min.js"></script>
-   <script src="js/main.js"></script>
-   <script src="reload/reload.js"></script>
+   <% include templates/script.ejs %>
    <script>
       console.log($().jquery);
    </script>

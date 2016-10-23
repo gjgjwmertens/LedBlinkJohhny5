@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function (req, res) {
    console.log(req.params);
    res.render('index', {         // pass vars to the render template
-      pageTitle: 'PID chopper control',
+      pageTitle: 'PID course overview',
       pageID: 'home'
    });
 });

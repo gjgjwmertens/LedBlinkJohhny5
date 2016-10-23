@@ -1,0 +1,16 @@
+.highlight {
+   color: #C64C6F;
+   font-weight: 600;
+}
+
+dt {
+   font-weight: bold;
+}
+
+#current_status_conatianer_id {
+   margin: 10px;
+}
+
+#item_5_status_container_id {
+   padding: 20px;
+}
