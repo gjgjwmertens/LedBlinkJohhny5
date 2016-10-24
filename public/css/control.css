@@ -14,3 +14,22 @@ dt {
 #item_5_status_container_id {
    padding: 20px;
 }
+
+.ws-status-field {
+   color: red;
+   font-weight: bold;
+   font-size: 150%;
+}
+
+#websocket_status_led_id {
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   margin: 0px 10px;
+   display: inline-block;
+}
+.line {
+   fill: none;
+   stroke: #000;
+   stroke-width: 1.5px;
+}
