@@ -3,6 +3,7 @@
  */
 
 var ws = new WebSocket('ws://20.0.0.112:3030');
+var potCurrentValue = mpCurrentValue = mfCurrentValue = 0;
 
 ws.onopen = function() {
    $('#websocket_conn_status_field_id').text('Connected');
@@ -26,7 +27,7 @@ ws.onmessage = function(payload) {
    // console.log(typeof data);
    if (typeof data === 'object') {
       updateStatus(data);
-      updateGraph(data);
+      // updateGraph(data);
    } else {
       console.log(data);
    }
@@ -53,9 +54,22 @@ $(function () {
    $('#ws_close_btn_id').on('click', function (e) {
       ws.send('exit');
    });
-   $.getJSON('api', updateStatus);
+
+   $('#start_chopper_btn_id').on('click', function (e) {
+      $.post('api', {
+         command: 'start motor',
+         value: 150
+      }, updateCommandFeedback);
+   });
+
+   // $.getJSON('api', updateStatus);
 
 });
+
+function updateCommandFeedback(data) {
+   console.log(data);
+   $('#command_feedback_field_id').text(data.msg);
+}
 
 function updateStatus(data) {
    // console.log(data);
@@ -64,6 +78,27 @@ function updateStatus(data) {
    $('#value_status_field_id').text(data.value);
    $('#data_status_field_id').text(data.data);
    $('#updated_status_field_id').text(data.time);
+
+   switch (data.item) {
+      case 'potentiometer':
+         potCurrentValue = data.value;
+         $('#pot_value_status_cell_id').text(data.value);
+         $('#pot_data_status_cell_id').text(data.data);
+         $('#pot_updated_status_cell_id').text(data.time);
+         break;
+      case 'motor_power':
+         mpCurrentValue = data.value;
+         $('#mp_value_status_cell_id').text(data.value);
+         $('#mp_data_status_cell_id').text(data.data);
+         $('#mp_updated_status_cell_id').text(data.time);
+         break;
+      case 'motor_feedback':
+         mfCurrentValue = data.value;
+         $('#mf_value_status_cell_id').text(data.value);
+         $('#mf_data_status_cell_id').text(data.data);
+         $('#mf_updated_status_cell_id').text(data.time);
+         break;
+   }
 }
 
 function updateItemValue(data) {

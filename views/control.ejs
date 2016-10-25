@@ -10,7 +10,7 @@
       <h1>PID chopper control</h1>
       <span id="websocket_conn_status_field_id" class="ws-status-field">Disconnected</span> <div id="websocket_status_led_id"></div>
       <button id="ws_close_btn_id">Close</button>
-      <div id="current_status_conatianer_id">
+      <div id="current_status_conatianer_id" style="display: none">
          <dl>
             <dt>Type</dt><dd id="type_status_field_id">Unknown</dd>
             <dt>Item</dt><dd id="item_status_field_id">Unknown</dd>
@@ -20,8 +20,7 @@
          </dl>
          <button id="update_status_btn_id">Update</button>
       </div>
-
-      <div id="item_5_status_container_id">
+      <div id="item_5_status_container_id" style="display: none">
          <dl>
             <dt>Current value</dt><dd id="item_5_current_value_field_id">Unknown</dd>
             <dt>Last updated</dt><dd id="item_5_updated_field_id">Unknown</dd>
@@ -32,6 +31,38 @@
             <button id="update_item_5_value_btn_id">Set</button>
          </div>
       </div>
+      <div id="input_status_table_container_id">
+         <table>
+            <tr>
+               <td></td>
+               <th>Potentiometer</th>
+               <th>Motor power</th>
+               <th>Motor feedback</th>
+            </tr>
+            <tr>
+               <th>Value</th>
+               <td id="pot_value_status_cell_id"></td>
+               <td id="mp_value_status_cell_id"></td>
+               <td id="mf_value_status_cell_id"></td>
+            </tr>
+            <tr>
+               <th>Data</th>
+               <td id="pot_data_status_cell_id"></td>
+               <td id="mp_data_status_cell_id"></td>
+               <td id="mf_data_status_cell_id"></td>
+            </tr>
+            <tr>
+               <th>Updated</th>
+               <td id="pot_updated_status_cell_id"></td>
+               <td id="mp_updated_status_cell_id"></td>
+               <td id="mf_updated_status_cell_id"></td>
+            </tr>
+         </table>
+      </div>
+      <div id="motor_control_container_id">
+         <button id="start_chopper_btn_id">Start</button>
+         <span id="command_feedback_field_id">Idle</span>
+      </div>
 
       <div id="status_graph_container_id">
          <svg id="potentiometer_graph_container_id" width="960" height="500"></svg>
@@ -41,6 +72,7 @@
       var pot_graph_id = 'potentiometer_graph_container_id';
    </script>
    <% include templates/script.ejs %>
+   <script src="//d3js.org/d3.v4.min.js"></script>
    <script src="js/control.js"></script>
    <script src="js/d3_line_graph_v1.js"></script>
 </html>

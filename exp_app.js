@@ -39,6 +39,7 @@ wss.on('connection', function (ws) {
 
 var five = require("johnny-five");
 var board = new five.Board();
+var motor = null;
 var potentiometer = {
    type: 'json',
    item: 'potentiometer',
@@ -46,27 +47,75 @@ var potentiometer = {
    data: 250,
    time: new Date().toString()
 };
+var motorPower = {
+   type: 'json',
+   item: 'motor_power',
+   value: -0.5,
+   data: 250,
+   time: new Date().toString()
+};
+var motorFeedback = {
+   type: 'json',
+   item: 'motor_feedback',
+   value: -0.5,
+   data: 250,
+   time: new Date().toString()
+};
+
 
 board.on('ready', function () {
+   motor = new five.Motor(9);
+   var potSensor = new five.Sensor({
+      pin: 'A0',
+      freq: 100
+   });
 
-   var sensor = new five.Sensor('A0');
-
-   sensor.on('change', function () {
+   potSensor.on('change', function () {
       var sample = this;
       process.stdout.write('\033c');
       console.log('[' + Date.now() + ']' + sample.scaleTo(0, 10));
       console.log('[' + Date.now() + ']' + sample.value);
 
-      potentiometer.value = sample.scaleTo(-1, 1);
+      potentiometer.value = sample.fscaleTo(-1, 1);
       potentiometer.data = sample.value;
       potentiometer.time = new Date().toString();
-   })
+
+      wss.clients.forEach(function (ws, index, list) {
+         ws.send(JSON.stringify(potentiometer));
+      })
+   });
+
+   var motorPowerSensor = new five.Sensor({
+      pin: 'A1',
+      freq: 100
+   });
+
+   motorPowerSensor.on('change', function () {
+      var sample = this;
+
+      motorPower.value = sample.scaleTo(0, 100);
+      motorPower.data = sample.value;
+      motorPower.time = new Date().toString();
+
+      wss.clients.forEach(function (ws, index, list) {
+         ws.send(JSON.stringify(motorPower));
+      })
+   });
+
+   var motorFeedbackSensor = new five.Sensor({
+      pin: 'A2',
+      freq: 100
+   });
+
+   motorFeedbackSensor.on('change', function () {
+      var sample = this;
+
+      motorFeedback.value = sample.scaleTo(0, 500);
+      motorFeedback.data = sample.value;
+      motorFeedback.time = new Date().toString();
+
+      wss.clients.forEach(function (ws, index, list) {
+         ws.send(JSON.stringify(motorFeedback));
+      })
+   });
 });
-
-setInterval(updateClient, 500);
-
-function updateClient() {
-   wss.clients.forEach(function (ws, index, list) {
-      ws.send(JSON.stringify(potentiometer));
-   })
-}

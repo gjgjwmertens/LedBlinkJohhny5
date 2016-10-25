@@ -1,19 +1,19 @@
 /**
  * Created by G on 24-10-2016.
  */
-var random = data = line = svg = x = y = g = null;
+var random = potData = line = svg = x = y = g = null;
 var margin = width = height = 0;
 
-$.getScript('//d3js.org/d3.v4.min.js', function () {
+// $.getScript('//d3js.org/d3.v4.min.js', function () {
    var n = 400;
-   // data = [];
+   potData = [];
 
    random = d3.randomNormal(0, .2);
-   data = d3.range(n).map(random);
-   // for (var i = 0; i < n; i++) {
-   //    data.push(0);
-   // }
-   // console.log(data);
+   // potData = d3.range(n).map(random);
+   for (var i = 0; i < n; i++) {
+      potData.push(0);
+   }
+   // console.log(potData);
 
    svg = d3.select('#' + pot_graph_id),
       margin = {top: 20, right: 20, bottom: 20, left: 40},
@@ -55,42 +55,36 @@ $.getScript('//d3js.org/d3.v4.min.js', function () {
    g.append("g")
     .attr("clip-path", "url(#clip)")
     .append("path")
-    .datum(data)
-    .attr("class", "line")
+    .datum(potData)
+    .attr('class', ' line')
     .attr("id", "pot_status_line_id")
     .transition()
     .duration(100)
     .ease(d3.easeLinear)
     .on('start', updateGraph);
-});
+// });
 
-function updateGraph(new_data) {
+function updateGraph() {
 
-   // Push a new data point onto the back.
-   // console.log(typeof new_data.value);
-   data.push(random());
-   // data.push(-1);
+   // Push a new potData point onto the back.
+   // console.log(typeof new_potData.value);
+   potData.push(potCurrentValue);
+   // potData.push(-1);
 
    // Redraw the line.
    // d3.select('#pot_status_line_id')
-
    d3.select(this)
      .attr("d", line)
-     .attr("transform", null)
-     // .transition()
-     // .attr("transform", "translate(" + x(-1) + ",0)")
-     //  .on('start', updateGraph);
-   ;
+     .attr("transform", null);
 
 
    // Slide it to the left.
-   // d3.active('#pot_status_line_id')
    d3.active(this)
      .transition()
      .attr("transform", "translate(" + x(-1) + ",0)")
       .on('start', updateGraph);
 
-   // Pop the old data point off the front.
-   data.shift();
+   // Pop the old potData point off the front.
+   potData.shift();
 
 }
