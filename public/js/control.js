@@ -62,6 +62,13 @@ $(function () {
       }, updateCommandFeedback);
    });
 
+   $('#stop_chopper_btn_id').on('click', function (e) {
+      $.post('api', {
+         command: 'stop motor',
+         value: 150
+      }, updateCommandFeedback);
+   });
+
    // $.getJSON('api', updateStatus);
 
 });

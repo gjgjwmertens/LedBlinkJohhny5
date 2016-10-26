@@ -24,12 +24,32 @@ router.get('/api/:item_id/:new_value', function (req, res) {
 });
 
 router.post('/api', function (req, res) {
+   var motor = req.app.get('motor');
+   var input = req.body;
+   console.log(input);
+
    if(motor) {
-      motor.start(150);
-      res.json({msg: 'Motor running'});
-      board.wait(5000, function() {
-         motor.stop();
-      });
+      switch(input.command) {
+         case 'start motor':
+            motor.start(input.value);
+            res.json({msg: 'Motor running'});
+            break;
+         case 'stop motor':
+            var start = Date.now();
+            for(var i = parseInt(input.value); i >= 0; i--) {
+               motor.start(i);
+               for(var j = 0; j < 25; j++) {
+                  // process.stdout.write('\033c');
+                  console.log(i);
+               }
+            }
+            console.log((Date.now() - start) / 1000);
+            motor.stop();
+            res.json({msg: 'Motor stopped'});
+            break;
+         default:
+            res.json({msg: 'Unknown command'});
+      }
    } else {
       res.json({msg: 'Motor not ready'});
    }

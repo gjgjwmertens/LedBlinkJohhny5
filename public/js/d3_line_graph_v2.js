@@ -1,27 +1,31 @@
 /**
  * Created by G on 24-10-2016.
  */
-var random = potData = line = svg = x = y = g = null;
-var margin = width = height = 0;
+var potData = line = null;
+var pot = {
+   n: 100,
+   duration: 100,
+   line: null,
+   x: null
+};
 
-// $.getScript('//d3js.org/d3.v4.min.js', function () {
+function createGraph (id, options) {
    var n = 100;
-   potData = [];
+   var data = [];
 
-   random = d3.randomNormal(0, .2);
-   // potData = d3.range(n).map(random);
    for (var i = 0; i < n; i++) {
-      potData.push(0);
+      data.push(0);
    }
+   potData = data;
    // console.log(potData);
 
-   svg = d3.select('#' + pot_graph_id),
+   var svg = d3.select('#' + id),
       margin = {top: 20, right: 20, bottom: 20, left: 40},
       width = +svg.attr("width") - margin.left - margin.right,
       height = +svg.attr("height") - margin.top - margin.bottom,
       g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-   x = d3.scaleLinear()
+   pot.x = d3.scaleLinear()
          .domain([0, n - 1])
          .range([0, width]);
 
@@ -29,9 +33,9 @@ var margin = width = height = 0;
          .domain([-1, 1])
          .range([height, 0]);
 
-   line = d3.line()
+   pot.line = d3.line()
             .x(function (d, i) {
-               return x(i);
+               return pot.x(i);
             })
             .y(function (d, i) {
                return y(d);
@@ -46,7 +50,7 @@ var margin = width = height = 0;
    g.append("g")
     .attr("class", "axis axis--x")
     .attr("transform", "translate(0," + y(0) + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(pot.x));
 
    g.append("g")
     .attr("class", "axis axis--y")
@@ -62,7 +66,7 @@ var margin = width = height = 0;
     .duration(100)
     .ease(d3.easeLinear)
     .on('start', updateGraph);
-// });
+};
 
 function updateGraph() {
 
@@ -74,14 +78,14 @@ function updateGraph() {
    // Redraw the line.
    // d3.select('#pot_status_line_id')
    d3.select(this)
-     .attr("d", line)
+     .attr("d", pot.line)
      .attr("transform", null);
 
 
    // Slide it to the left.
    d3.active(this)
      .transition()
-     .attr("transform", "translate(" + x(-1) + ",0)")
+     .attr("transform", "translate(" + pot.x(-1) + ",0)")
       .on('start', updateGraph);
 
    // Pop the old potData point off the front.

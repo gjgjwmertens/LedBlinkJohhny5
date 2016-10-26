@@ -17,10 +17,6 @@ app.use(express.static('./public'));
 
 // global vars for the EJS (Embedded JavaScript) framework
 app.locals.siteTitle = 'CS'; // Control Systems title
-// app.locals.wsClientList = wsClients; // web socket client list
-
-// var five = require("johnny-five");
-// var board = new five.Board();
 
 var server = app.listen(app.get('port'), function () {
    console.log('Example app listening on port: ' + app.get('port') + '!');
@@ -39,7 +35,6 @@ wss.on('connection', function (ws) {
 
 var five = require("johnny-five");
 var board = new five.Board();
-var motor = null;
 var potentiometer = {
    type: 'json',
    item: 'potentiometer',
@@ -64,7 +59,9 @@ var motorFeedback = {
 
 
 board.on('ready', function () {
-   motor = new five.Motor(9);
+   // motor = new five.Motor(9);
+   app.set('motor', new five.Motor(9));
+
    var potSensor = new five.Sensor({
       pin: 'A0',
       freq: 100
@@ -72,9 +69,9 @@ board.on('ready', function () {
 
    potSensor.on('change', function () {
       var sample = this;
-      process.stdout.write('\033c');
-      console.log('[' + Date.now() + ']' + sample.scaleTo(0, 10));
-      console.log('[' + Date.now() + ']' + sample.value);
+      // process.stdout.write('\033c');
+      // console.log('[' + Date.now() + ']' + sample.scaleTo(0, 10));
+      // console.log('[' + Date.now() + ']' + sample.value);
 
       potentiometer.value = sample.fscaleTo(-1, 1);
       potentiometer.data = sample.value;

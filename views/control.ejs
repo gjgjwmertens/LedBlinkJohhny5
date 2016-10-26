@@ -61,18 +61,24 @@
       </div>
       <div id="motor_control_container_id">
          <button id="start_chopper_btn_id">Start</button>
+         <button id="stop_chopper_btn_id">Stop</button>
          <span id="command_feedback_field_id">Idle</span>
       </div>
 
       <div id="status_graph_container_id">
-         <svg id="potentiometer_graph_container_id" width="960" height="500"></svg>
+         <svg id="potentiometer_graph_container_id" width="480" height="250"></svg>
       </div>
    </body>
-   <script>
-      var pot_graph_id = 'potentiometer_graph_container_id';
-   </script>
    <% include templates/script.ejs %>
    <script src="//d3js.org/d3.v4.min.js"></script>
    <script src="js/control.js"></script>
-   <script src="js/d3_line_graph_v1.js"></script>
+   <script src="js/d3_line_graph_v2.js"></script>
+   <script>
+      var pot_graph_id = 'potentiometer_graph_container_id';
+
+      createGraph(pot_graph_id, {
+         n: 100,
+         duration: 100
+      });
+   </script>
 </html>
