@@ -38,7 +38,7 @@ router.post('/api', function (req, res) {
             var start = Date.now();
             for(var i = parseInt(input.value); i >= 0; i--) {
                motor.start(i);
-               for(var j = 0; j < 25; j++) {
+               for(var j = 0; j < 50; j++) {
                   // process.stdout.write('\033c');
                   console.log(i);
                }

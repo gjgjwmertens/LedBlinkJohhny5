@@ -2,34 +2,36 @@
  * Created by G on 24-10-2016.
  */
 var potData = line = null;
-var pot = {
+var graphs = {potentiometer: {
    n: 100,
+   data: [],
    duration: 100,
    line: null,
-   x: null
-};
+   x: null,
+   y: null,
+   margin: {top: 20, right: 20, bottom: 20, left: 40}
+}};
+// var pot = null;
 
 function createGraph (id, options) {
-   var n = 100;
-   var data = [];
+   var pot = graphs[id];
+   var graph_id = id;
 
-   for (var i = 0; i < n; i++) {
-      data.push(0);
+   for (var i = 0; i < pot.n; i++) {
+      pot.data.push(0);
    }
-   potData = data;
    // console.log(potData);
 
-   var svg = d3.select('#' + id),
-      margin = {top: 20, right: 20, bottom: 20, left: 40},
-      width = +svg.attr("width") - margin.left - margin.right,
-      height = +svg.attr("height") - margin.top - margin.bottom,
-      g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+   var svg = d3.select('#' + id + '_graph_container_id'),
+      width = +svg.attr("width") - pot.margin.left - pot.margin.right,
+      height = +svg.attr("height") - pot.margin.top - pot.margin.bottom,
+      g = svg.append("g").attr("transform", "translate(" + pot.margin.left + "," + pot.margin.top + ")");
 
    pot.x = d3.scaleLinear()
-         .domain([0, n - 1])
+         .domain([0, pot.n - 1])
          .range([0, width]);
 
-   y = d3.scaleLinear()
+   pot.y = d3.scaleLinear()
          .domain([-1, 1])
          .range([height, 0]);
 
@@ -38,7 +40,7 @@ function createGraph (id, options) {
                return pot.x(i);
             })
             .y(function (d, i) {
-               return y(d);
+               return pot.y(d);
             });
 
    g.append("defs").append("clipPath")
@@ -49,19 +51,19 @@ function createGraph (id, options) {
 
    g.append("g")
     .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + y(0) + ")")
+    .attr("transform", "translate(0," + pot.y(0) + ")")
     .call(d3.axisBottom(pot.x));
 
    g.append("g")
     .attr("class", "axis axis--y")
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(pot.y));
 
    g.append("g")
     .attr("clip-path", "url(#clip)")
     .append("path")
-    .datum(potData)
+    .datum(pot.data)
     .attr('class', ' line')
-    .attr("id", "pot_status_line_id")
+    .attr("id", id + "_status_line_id")
     .transition()
     .duration(100)
     .ease(d3.easeLinear)
@@ -69,10 +71,13 @@ function createGraph (id, options) {
 };
 
 function updateGraph() {
-
+   var id = this.id.split('_');
+   var pot = graphs[id[0]];
+   // var id = id.split('_');
+// console.log(id);
    // Push a new potData point onto the back.
    // console.log(typeof new_potData.value);
-   potData.push(potCurrentValue);
+   pot.data.push(potCurrentValue);
    // potData.push(-1);
 
    // Redraw the line.
@@ -89,6 +94,6 @@ function updateGraph() {
       .on('start', updateGraph);
 
    // Pop the old potData point off the front.
-   potData.shift();
+   pot.data.shift();
 
 }
