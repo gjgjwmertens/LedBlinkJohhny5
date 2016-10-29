@@ -35,32 +35,50 @@ wss.on('connection', function (ws) {
 
 var five = require("johnny-five");
 var board = new five.Board();
+var motor = null;
 var potentiometer = {
    type: 'json',
    item: 'potentiometer',
-   value: -0.5,
-   data: 250,
+   value: 0,
+   data: 0,
    time: new Date().toString()
 };
 var motorPower = {
    type: 'json',
-   item: 'motor_power',
-   value: -0.5,
-   data: 250,
+   item: 'motorPower',
+   value: 0,
+   data: 0,
    time: new Date().toString()
 };
 var motorFeedback = {
    type: 'json',
-   item: 'motor_feedback',
-   value: -0.5,
-   data: 250,
+   item: 'motorFeedback',
+   value: 0,
+   data: 0,
    time: new Date().toString()
 };
 
+var mValue = 100;
+function motorControl(val) {
+   if(val !== undefined) {
+      mValue = parseInt(val);
+      console.log('New motor value: ' + mValue);
+   }
+   motor.start(mValue--);
+   if(mValue > 0) {
+      board.wait(100, motorControl);
+   }
+   if(mValue == 0) {
+      motor.stop();
+      console.log('Motor stopped');
+   }
+   console.log(mValue);
+}
 
 board.on('ready', function () {
-   // motor = new five.Motor(9);
-   app.set('motor', new five.Motor(9));
+   motor = new five.Motor(9);
+   app.set('motor', motor);
+   app.set('motor_ctrl', motorControl);
 
    var potSensor = new five.Sensor({
       pin: 'A0',

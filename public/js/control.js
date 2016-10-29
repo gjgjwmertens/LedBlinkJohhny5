@@ -3,21 +3,25 @@
  */
 
 var ws = new WebSocket('ws://20.0.0.112:3030');
-var potCurrentValue = mpCurrentValue = mfCurrentValue = 0;
+var currentValues = {
+   'potentiometer': 0,
+   'motorPower': 0,
+   'motorFeedback': 0
+};
 
-ws.onopen = function() {
+ws.onopen = function () {
    $('#websocket_conn_status_field_id').text('Connected');
    $('#websocket_conn_status_field_id').css('color', 'green');
    $('#websocket_status_led_id').css('background-color', 'greenyellow');
 };
 
-ws.onclose = function() {
+ws.onclose = function () {
    $('#websocket_conn_status_field_id').text('Disconnected');
    $('#websocket_conn_status_field_id').css('color', 'red');
    $('#websocket_status_led_id').css('background-color', 'red');
 };
 
-ws.onmessage = function(payload) {
+ws.onmessage = function (payload) {
    var data = '';
    try {
       data = JSON.parse(payload.data);
@@ -62,6 +66,13 @@ $(function () {
       }, updateCommandFeedback);
    });
 
+   $('#set_chopper_btn_id').on('click', function (e) {
+      $.post('api', {
+         command: 'set motor',
+         value: 75
+      }, updateCommandFeedback);
+   });
+
    $('#stop_chopper_btn_id').on('click', function (e) {
       $.post('api', {
          command: 'stop motor',
@@ -88,19 +99,19 @@ function updateStatus(data) {
 
    switch (data.item) {
       case 'potentiometer':
-         potCurrentValue = data.value;
+         currentValues[data.item] = data.value;
          $('#pot_value_status_cell_id').text(data.value);
          $('#pot_data_status_cell_id').text(data.data);
          $('#pot_updated_status_cell_id').text(data.time);
          break;
-      case 'motor_power':
-         mpCurrentValue = data.value;
+      case 'motorPower':
+         currentValues[data.item] = data.value;
          $('#mp_value_status_cell_id').text(data.value);
          $('#mp_data_status_cell_id').text(data.data);
          $('#mp_updated_status_cell_id').text(data.time);
          break;
-      case 'motor_feedback':
-         mfCurrentValue = data.value;
+      case 'motorFeedback':
+         currentValues[data.item] = data.value;
          $('#mf_value_status_cell_id').text(data.value);
          $('#mf_data_status_cell_id').text(data.data);
          $('#mf_updated_status_cell_id').text(data.time);
