@@ -1,5 +1,6 @@
 var express = require('express');
 var reload = require('reload');
+var fs = require('fs');
 var wss = new require('ws').Server({port: 3030});
 var app = express();
 
@@ -57,28 +58,63 @@ var motorFeedback = {
    data: 0,
    time: new Date().toString()
 };
+var motorPowerSensor = null, motorFeedbackSensor = null;
+var motorPowerData = '', motorFeedbackData = '';
 
 var mValue = 100;
 function motorControl(val) {
    if(val !== undefined) {
-      mValue = parseInt(val);
+      mValue = Math.min(255, parseInt(val));
       console.log('New motor value: ' + mValue);
+   } else {
+      motor.start(mValue--);
+      if(mValue > 0) {
+         board.wait(100, motorControl);
+      }
+      if(mValue == 0) {
+         motor.stop();
+         console.log('Motor stopped');
+      }
+      console.log(mValue);
    }
-   motor.start(mValue--);
-   if(mValue > 0) {
-      board.wait(100, motorControl);
+}
+
+function startMotorTest() {
+   motorPowerSensor.on('data', function() {
+      motorPowerData += this.value + ', ' + this.raw + "\r\n";
+      console.log('Motor power: ' + this.value);
+   });
+   motorFeedbackSensor.on('data', function() {
+      motorFeedbackData += this.value + ', ' + this.raw + "\r\n";
+      console.log('Motor feedback: ' + this.value);
+   });
+   motor.start(100);
+   board.wait(5000, stopMotorTest);
+}
+
+function motorTest() {
+   if(motorPowerSensor && motorFeedbackSensor) {
+      board.wait(5000, startMotorTest)
    }
-   if(mValue == 0) {
-      motor.stop();
-      console.log('Motor stopped');
-   }
-   console.log(mValue);
+}
+
+function stopMotorTest() {
+   motorPowerSensor.removeAllListeners('data');
+   fs.writeFile('motorPowerData_' + Date.now() + '.csv', motorPowerData, function (err) {
+      console.log('Motor power data saved');
+   });
+   motorFeedbackSensor.removeAllListeners('data');
+   fs.writeFile('motorFeedbackData_' + Date.now() + '.csv', motorFeedbackData, function (err) {
+      console.log('Motor feedback data saved');
+   });
+   motor.stop();
 }
 
 board.on('ready', function () {
    motor = new five.Motor(9);
    app.set('motor', motor);
    app.set('motor_ctrl', motorControl);
+   app.set('motor_test', motorTest);
 
    var potSensor = new five.Sensor({
       pin: 'A0',
@@ -100,7 +136,7 @@ board.on('ready', function () {
       })
    });
 
-   var motorPowerSensor = new five.Sensor({
+   motorPowerSensor = new five.Sensor({
       pin: 'A1',
       freq: 100
    });
@@ -117,7 +153,7 @@ board.on('ready', function () {
       })
    });
 
-   var motorFeedbackSensor = new five.Sensor({
+   motorFeedbackSensor = new five.Sensor({
       pin: 'A2',
       freq: 100
    });

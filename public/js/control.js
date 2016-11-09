@@ -69,7 +69,7 @@ $(function () {
    $('#set_chopper_btn_id').on('click', function (e) {
       $.post('api', {
          command: 'set motor',
-         value: 75
+         value: $('#set_chopper_value_input_field_id').val()
       }, updateCommandFeedback);
    });
 
@@ -77,6 +77,13 @@ $(function () {
       $.post('api', {
          command: 'stop motor',
          value: 150
+      }, updateCommandFeedback);
+   });
+
+   $('#test_chopper_btn_id').on('click', function (e) {
+      $.post('api', {
+         command: 'test motor',
+         value: 100
       }, updateCommandFeedback);
    });
 
