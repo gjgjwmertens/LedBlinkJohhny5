@@ -24,13 +24,10 @@ router.get('/api/:item_id/:new_value', function (req, res) {
 });
 
 router.post('/api', function (req, res) {
-   var motor = req.app.get('motor');
-   var mCtrl = req.app.get('motor_ctrl');
-   var mTest = req.app.get('motor_test');
+   var chopper = req.app.get('chopper');
    var input = req.body;
-   console.log(input);
 
-   if (motor) {
+   if (chopper && chopper.motor) {
       switch (input.command) {
          case 'start motor':
          case 'set motor':
@@ -38,7 +35,8 @@ router.post('/api', function (req, res) {
             res.json({msg: 'Motor set'});
             break;
          case 'test motor':
-            mTest();
+            chopper.motorTest();
+            res.json({msg: 'Motor tested'});
             break;
          case 'stop motor':
             motor.stop();

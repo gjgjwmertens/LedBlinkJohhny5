@@ -76,7 +76,7 @@ function createGraph(id) {
     .attr('class', ' line')
     .attr("id", id + "_status_line_id")
     .transition()
-    .duration(100)
+    .duration(graph.duration)
     .ease(d3.easeLinear)
     .on('start', updateGraph);
 };
