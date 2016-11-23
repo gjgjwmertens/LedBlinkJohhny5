@@ -30,16 +30,19 @@ router.post('/api', function (req, res) {
    if (chopper && chopper.motor) {
       switch (input.command) {
          case 'start motor':
+            chopper.motorStart();
+            res.json({msg: 'Motor started at: ' + chopper.mValue});
+            break;
          case 'set motor':
-            mCtrl(input.value);
-            res.json({msg: 'Motor set'});
+            chopper.motorSet(input.value);
+            res.json({msg: 'Motor set: ' + input.value});
             break;
          case 'test motor':
             chopper.motorTest();
             res.json({msg: 'Motor tested'});
             break;
          case 'stop motor':
-            motor.stop();
+            chopper.motorStop();
             res.json({msg: 'Motor stopped'});
             break;
          default:

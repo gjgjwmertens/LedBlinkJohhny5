@@ -4,9 +4,10 @@
 
 var ws = new WebSocket('ws://20.0.0.112:3030');
 var currentValues = {
-   'potentiometer': 0,
-   'motorPower': 0,
-   'motorFeedback': 0
+   'potentiometer': {data: 0, value: 0},
+   'motorPower': {data: 0, value: 0},
+   'motorFeedback': {data: 0, value: 0},
+   'emf':  {data: 0, value: 0}
 };
 
 ws.onopen = function () {
@@ -33,7 +34,7 @@ ws.onmessage = function (payload) {
       updateStatus(data);
       // updateGraph(data);
    } else {
-      console.log(data);
+      console.log('control.js::ws.onmessage: ' + data);
    }
 };
 
@@ -92,42 +93,45 @@ $(function () {
 });
 
 function updateCommandFeedback(data) {
-   console.log(data);
+   console.log({location: 'control.js::updateCommandFeedback (data): ', msg: data});
    $('#command_feedback_field_id').text(data.msg);
 }
 
 function updateStatus(data) {
-   // console.log(data);
-   $('#type_status_field_id').text(data.type);
-   $('#item_status_field_id').text(data.item);
-   $('#value_status_field_id').text(data.value);
-   $('#data_status_field_id').text(data.data);
-   $('#updated_status_field_id').text(data.time);
-
    switch (data.item) {
       case 'potentiometer':
-         currentValues[data.item] = data.value;
+         currentValues[data.item] = data;
          $('#pot_value_status_cell_id').text(data.value);
          $('#pot_data_status_cell_id').text(data.data);
          $('#pot_updated_status_cell_id').text(data.time);
          break;
       case 'motorPower':
-         currentValues[data.item] = data.value;
+         currentValues[data.item] = data;
          $('#mp_value_status_cell_id').text(data.value);
          $('#mp_data_status_cell_id').text(data.data);
          $('#mp_updated_status_cell_id').text(data.time);
          break;
       case 'motorFeedback':
-         currentValues[data.item] = data.value;
+         currentValues[data.item] = data;
          $('#mf_value_status_cell_id').text(data.value);
          $('#mf_data_status_cell_id').text(data.data);
          $('#mf_updated_status_cell_id').text(data.time);
          break;
    }
+   var motorV = parseInt(currentValues['motorFeedback'].data),
+      pwmV = parseInt(currentValues['motorPower'].data) - motorV;
+
+   var emf = (motorV - (pwmV * 16)) / 4;
+   console.log({location: 'control.js::updateStatus (emf): ',
+      emf: emf,
+      pwmV: pwmV,
+      motorV: motorV
+   });
+   currentValues['emf'].data = emf;
 }
 
 function updateItemValue(data) {
-   console.log(data);
+   console.log('control.js::updateItemValue (data): ' + data);
    $('#item_5_current_value_field_id').text(data.value);
    $('#item_5_updated_field_id').text(data.time);
 }

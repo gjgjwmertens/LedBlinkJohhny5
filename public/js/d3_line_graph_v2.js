@@ -13,6 +13,16 @@ var graphs = {
       scale_y: {min: -1, max: 1},
       margin: {top: 20, right: 20, bottom: 20, left: 40}
    },
+   emf: {
+      n: 100,
+      data: [],
+      duration: 100,
+      line: null,
+      x: null,
+      y: null,
+      scale_y: {min: 0, max: 255},
+      margin: {top: 20, right: 20, bottom: 20, left: 40}
+   },
    motorPower: {
       n: 100,
       data: [],
@@ -86,7 +96,7 @@ function updateGraph() {
    var graph = graphs[id];
 
    // Push a new point onto the back.
-   graph.data.push(currentValues[id]);
+   graph.data.push(currentValues[id].value);
 
    // Redraw the line.
    d3.select(this)

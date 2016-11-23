@@ -10,16 +10,6 @@
       <h1>PID chopper control</h1>
       <span id="websocket_conn_status_field_id" class="ws-status-field">Disconnected</span> <div id="websocket_status_led_id"></div>
       <button id="ws_close_btn_id">Close</button>
-      <div id="current_status_conatianer_id" style="display: none">
-         <dl>
-            <dt>Type</dt><dd id="type_status_field_id">Unknown</dd>
-            <dt>Item</dt><dd id="item_status_field_id">Unknown</dd>
-            <dt>Value</dt><dd id="value_status_field_id">Unknown</dd>
-            <dt>Data</dt><dd id="data_status_field_id">Unknown</dd>
-            <dt>Last updated</dt><dd id="updated_status_field_id">Unknown</dd>
-         </dl>
-         <button id="update_status_btn_id">Update</button>
-      </div>
       <div id="item_5_status_container_id" style="display: none">
          <dl>
             <dt>Current value</dt><dd id="item_5_current_value_field_id">Unknown</dd>
@@ -76,6 +66,7 @@
 
       <div id="status_graph_container_id">
          <svg id="potentiometer_graph_container_id" width="480" height="250"></svg>
+         <svg id="emf_graph_container_id" width="480" height="250"></svg>
          <svg id="motorPower_graph_container_id" width="480" height="250"></svg>
       </div>
    </body>
@@ -85,6 +76,7 @@
    <script src="js/d3_line_graph_v2.js"></script>
    <script>
       createGraph('potentiometer');
+      createGraph('emf');
       createGraph('motorPower');
    </script>
 </html>
