@@ -1,13 +1,22 @@
 /**
  * Created by G on 23-10-2016.
  */
+Array.prototype.sum = Array.prototype.sum || function () {
+      return this.reduce(function (sum, a) {
+         return sum + Number(a)
+      }, 0);
+   }
+
+Array.prototype.average = Array.prototype.average || function () {
+      return this.sum() / (this.length || 1);
+   }
 
 var ws = new WebSocket('ws://20.0.0.112:3030');
 var currentValues = {
-   'potentiometer': {data: 0, value: 0},
-   'motorPower': {data: 0, value: 0},
-   'motorFeedback': {data: 0, value: 0},
-   'emf':  {data: 0, value: 0}
+   'potentiometer': {raw: null, avg: [0, 0, 0, 0, 0], avgValue: 0},
+   'motorPower': {raw: null, avg: [0, 0, 0, 0, 0], avgValue: 0},
+   'motorFeedback': {raw: null, avg: [0, 0, 0, 0, 0], avgValue: 0},
+   'emf': {raw: null, avg: [0, 0, 0, 0, 0], avgValue: 0}
 };
 
 ws.onopen = function () {
@@ -98,36 +107,40 @@ function updateCommandFeedback(data) {
 }
 
 function updateStatus(data) {
-   switch (data.item) {
-      case 'potentiometer':
-         currentValues[data.item] = data;
-         $('#pot_value_status_cell_id').text(data.value);
-         $('#pot_data_status_cell_id').text(data.data);
-         $('#pot_updated_status_cell_id').text(data.time);
-         break;
-      case 'motorPower':
-         currentValues[data.item] = data;
-         $('#mp_value_status_cell_id').text(data.value);
-         $('#mp_data_status_cell_id').text(data.data);
-         $('#mp_updated_status_cell_id').text(data.time);
-         break;
-      case 'motorFeedback':
-         currentValues[data.item] = data;
-         $('#mf_value_status_cell_id').text(data.value);
-         $('#mf_data_status_cell_id').text(data.data);
-         $('#mf_updated_status_cell_id').text(data.time);
-         break;
-   }
-   var motorV = parseInt(currentValues['motorFeedback'].data),
-      pwmV = parseInt(currentValues['motorPower'].data) - motorV;
 
-   var emf = (motorV - (pwmV * 16)) / 4;
-   console.log({location: 'control.js::updateStatus (emf): ',
-      emf: emf,
-      pwmV: pwmV,
-      motorV: motorV
-   });
-   currentValues['emf'].data = emf;
+   if (data.item) {
+      currentValues[data.item].raw = data;
+      $('#' + data.item + '_value_status_cell_id').text(data.value);
+      $('#' + data.item + '_data_status_cell_id').text(data.data);
+      $('#' + data.item + '_updated_status_cell_id').text(data.time);
+
+      switch (data.item) {
+         case 'potentiometer':
+            currentValues[data.item].avg.push(data.value);
+            currentValues[data.item].avg.shift();
+            currentValues[data.item].avgValue = currentValues[data.item].avg.average();
+            break;
+
+         default:
+            currentValues[data.item].avg.push(data.data);
+            currentValues[data.item].avg.shift();
+            currentValues[data.item].avgValue = currentValues[data.item].avg.average();
+            break;
+      }
+   }
+
+   console.log(currentValues);
+   // var motorV = parseInt(currentValues['motorFeedback'].data),
+   //    pwmV = parseInt(currentValues['motorPower'].data) - motorV;
+   //
+   // var emf = (motorV - (pwmV * 16)) / 4;
+   // console.log({
+   //    location: 'control.js::updateStatus (emf): ',
+   //    emf: emf,
+   //    pwmV: (pwmV * (5 / 1024)),
+   //    motorV: motorV
+   // });
+   // currentValues['emf'].data = emf;
 }
 
 function updateItemValue(data) {
