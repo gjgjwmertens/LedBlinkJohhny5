@@ -31,7 +31,7 @@ I chose the later
 	- Upload
 
 Making the editing process easier I use PhPStorm as an IDE.
-Created a new project from existing code and configure the rpi (20.0.0.112) as host.
+Created a new project from existing code and configure the rpi_012 (20.0.0.112) as host.
 You can also start a SSH session from the tools menu.
 
 To make web server development easier I started using Express
@@ -45,11 +45,14 @@ To make web server development easier I started using Express
 nodemon not detecting all changes!!
    - adjusted start command to watch the correct files in package.json to fix this
 
-- the project can now be started with: npm start
+Run: the project can now be started with: npm start
+   - in PhpStorm goto tools -> Start SSH session choose Rpi_012
+   - in the terminal (connected to rpi_012) goto /home/pi/Documents/NodeJS_Projects/LedBlinkJohnny5
+   - run npm start (see package.json)
 
 - now working on lab 1 a proportional control system
-   - in the course the motor has a resistance of 0.5 ohm which accactly matches the resistor of pwmV
-      but my motor is about 8 ohms which I tested by holding the propellor and measuring motorV (EMF should be 0)
-      see LedBlinkJohnnyFive sheet in google docs https://docs.google.com/spreadsheets/d/1fI9iq1i2kn7cKNAq6IXoW20Ms7yhuahRd9JUohIzcnA/edit?pli=1#gid=0
+   - in the course the motor has a resistance of 0.5 ohm which exactly matches the resistor of pwmV
+      but my motor is about 8 ohms which I tested by holding the propeller and measuring motorV (EMF should be 0)
+      see LedBlinkJohnnyFive sheet in google docs GoogleDrive\Projects\LedBlinkJohnnyFive
 
 
